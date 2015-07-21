@@ -2,7 +2,9 @@ package org.guateora.oraconmigo;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 
 import org.guateora.oraconmigo.utils.Keys;
 
@@ -20,6 +22,10 @@ public class App extends Application {
 
         // Initialize Parse
         Parse.initialize(this, Keys.PARSE_APP_ID, Keys.PARSE_CLIENT_KEY);
+
+        // Initialize Facebook SDK
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        ParseFacebookUtils.initialize(getBaseContext());
     }
 
 }
