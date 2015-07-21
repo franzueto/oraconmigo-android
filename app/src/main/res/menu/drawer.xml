@@ -14,5 +14,10 @@
             android:id="@+id/faqs"
             android:icon="@drawable/ic_question"
             android:title="@string/faqs"/>
+
+        <item
+            android:id="@+id/loginout"
+            android:icon="@drawable/ic_question"
+            android:title="@string/fb_login"/>
     </group>
 </menu>

@@ -13,8 +13,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseUser;
 
 import org.guateora.oraconmigo.fragments.FragmentMain;
 import org.guateora.oraconmigo.fragments.FragmentUnete;
@@ -70,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Navigation Listener
         NavigationView main_drawer_navigation = (NavigationView) findViewById(R.id.main_drawer_navigation);
+
+        if(ParseUser.getCurrentUser() != null){
+            Menu drawer_menu = main_drawer_navigation.getMenu();
+            MenuItem logInOut = drawer_menu.findItem(R.id.loginout);
+            logInOut.setTitle(getString(R.string.logout));
+        }
+
         main_drawer_navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -86,6 +99,15 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.faqs:
                        /* Intent intentFaqs = new Intent(MainActivity.this, FAQActivity.class);
                         startActivity(intentFaqs);*/
+                        break;
+                    case R.id.loginout:
+                        if(ParseUser.getCurrentUser() != null){
+                            ParseUser.logOut();
+                            finish();
+                            startActivity(getIntent());
+                        } else{
+                            fbLogin();
+                        }
                         break;
                     default:
                         Log.w("TAG", "Do nothing");
@@ -127,5 +149,30 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void fbLogin(){
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(this, null, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                if (user == null) {
+                    Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                } else if (user.isNew()) {
+                    Log.d("MyApp", "User signed up and logged in through Facebook!");
+                    finish();
+                    startActivity(getIntent());
+                } else {
+                    Log.d("MyApp", "User logged in through Facebook!");
+                    finish();
+                    startActivity(getIntent());
+                }
+            }
+        });
     }
 }
