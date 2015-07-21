@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/guia_completa"
+            android:checked="true"
+            android:icon="@drawable/ic_idea"
+            android:title="@string/guia_completa"/>
+        <item
+            android:id="@+id/mapa_oradores"
+            android:icon="@drawable/ic_user_flat"
+            android:title="@string/mapa_oradores"/>
+        <item
+            android:id="@+id/faqs"
+            android:icon="@drawable/ic_question"
+            android:title="@string/faqs"/>
+    </group>
+</menu>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Ora Conmigo</string>
+    
+    <string name="faqs">Preguntas Frecuntes</string>
+    <string name="mapa_oradores">Mapa Oradores</string>
+    <string name="guia_completa">Guía Completa</string>
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
+
+    <string name="tab_1_title">HOY</string>
+    <string name="tab_2_title">TESTIMONIOS</string>
+    <string name="tab_3_title">ÚNETE</string>
+</resources>
