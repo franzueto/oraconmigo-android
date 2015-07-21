@@ -31,7 +31,7 @@ public class FragmentMain extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        FloatingActionButton checkin_btn = (FloatingActionButton) view.findViewById(R.id.check_in_pray);
+        FloatingActionButton checkin_btn = (FloatingActionButton) view.findViewById(R.id.main_check_in_pray);
         checkin_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
