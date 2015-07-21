@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:id="@+id/main_pray_container">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -73,7 +74,8 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:gravity="right"
-                        android:layout_marginBottom="24dp"/>
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="56dp"/>
 
                 </LinearLayout>
 
