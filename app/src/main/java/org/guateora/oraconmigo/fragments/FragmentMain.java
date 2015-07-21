@@ -10,14 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.squareup.picasso.Picasso;
 
 import org.guateora.oraconmigo.MainActivity;
 import org.guateora.oraconmigo.R;
@@ -86,6 +89,15 @@ public class FragmentMain extends Fragment {
 
                         View pray_container = view.findViewById(R.id.main_pray_container);
                         pray_container.setBackgroundColor(Color.parseColor(pray.getString(ParseConstants.TABLE_PRAY_FIELD_COLOR)));
+
+                        if(pray.has(ParseConstants.TABLE_PRAY_FIELD_IMAGE)){
+                            ImageView main_image = (ImageView) view.findViewById(R.id.main_image);
+                            ParseFile image_file = pray.getParseFile(ParseConstants.TABLE_PRAY_FIELD_IMAGE);
+
+                            Picasso.with(getActivity())
+                                    .load(image_file.getUrl())
+                                    .into(main_image);
+                        }
 
                     } else{
                         Log.d("PRAY", "There is nothing on Pray: ");
