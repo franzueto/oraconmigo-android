@@ -1,6 +1,9 @@
 package org.guateora.oraconmigo;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -29,7 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
+
+    public Location mCurrentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,22 @@ public class MainActivity extends AppCompatActivity {
         //Tabs with view pager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tablayout);
         tabLayout.setupWithViewPager(viewPager);
+
+        setUpLocation();
+    }
+
+    private void setUpLocation(){
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            //Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            LocationListener locationListener = new MyLocationListener();
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+        }else{
+            Toast.makeText(this, "Por favor activa el GPS", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void setUpDrawer(Toolbar toolbar){
@@ -101,11 +123,11 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intentFaqs);*/
                         break;
                     case R.id.loginout:
-                        if(ParseUser.getCurrentUser() != null){
+                        if (ParseUser.getCurrentUser() != null) {
                             ParseUser.logOut();
                             finish();
                             startActivity(getIntent());
-                        } else{
+                        } else {
                             fbLogin();
                         }
                         break;
@@ -121,11 +143,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new FragmentMain(), getString(R.string.tab_1_title));
+        adapter.addFrag(FragmentMain.newInstance(), getString(R.string.tab_1_title));
         adapter.addFrag(new FragmentMain(), getString(R.string.tab_2_title));
-        adapter.addFrag(new FragmentUnete(), getString(R.string.tab_3_title));
+        adapter.addFrag(FragmentUnete.newInstance(), getString(R.string.tab_3_title));
         viewPager.setAdapter(adapter);
     }
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -174,5 +197,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.w("TAG", "LAT: "+ location.getLatitude());
+            mCurrentLocation = location;
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
     }
 }
