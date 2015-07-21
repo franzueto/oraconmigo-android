@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
                         //startActivity(mainIntent);
                         break;
                     case R.id.mapa_oradores:
-                        /*Intent intent = new Intent(MainActivity.this, CandidaturasActivity.class);
-                        startActivity(intent);*/
+                        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.faqs:
                        /* Intent intentFaqs = new Intent(MainActivity.this, FAQActivity.class);
