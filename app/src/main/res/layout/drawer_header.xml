@@ -7,7 +7,38 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:background="#cacaca"
-        android:scaleType="fitCenter"
-        android:padding="16dp"/>
+        android:src="@drawable/bg_drawer_header"
+        android:scaleType="fitXY" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#77212121"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:padding="16dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:id="@+id/drawer_avatar"
+            android:src="@drawable/avatar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/drawer_name"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

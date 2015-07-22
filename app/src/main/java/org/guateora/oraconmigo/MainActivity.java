@@ -21,6 +21,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -28,15 +30,19 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 import org.guateora.oraconmigo.fragments.FragmentMain;
+import org.guateora.oraconmigo.fragments.FragmentTestimonials;
 import org.guateora.oraconmigo.fragments.FragmentUnete;
 import org.guateora.oraconmigo.utils.ParseConstants;
+import org.guateora.oraconmigo.utils.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -118,7 +124,24 @@ public class MainActivity extends AppCompatActivity{
         //Navigation Listener
         NavigationView main_drawer_navigation = (NavigationView) findViewById(R.id.main_drawer_navigation);
 
-        if(ParseUser.getCurrentUser() != null){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        if(currentUser != null){
+            //Set up user information on drawer header
+            ImageView drawer_avatar = (ImageView) main_drawer_navigation.findViewById(R.id.drawer_avatar);
+            TextView drawer_name = (TextView) main_drawer_navigation.findViewById(R.id.drawer_name);
+            try {
+                Picasso.with(this)
+                        .load(String.format(Utils.FACEBOOK_SQUARE_PICTURE, currentUser.fetchIfNeeded().getString(ParseConstants.TABLE_USER_FIELD_FBID)))
+                        .placeholder(R.drawable.avatar)
+                        .into(drawer_avatar);
+
+                drawer_name.setText(currentUser.fetchIfNeeded().getString(ParseConstants.TABLE_USER_FIELD_NAME));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            //LoginLogout Buton
             Menu drawer_menu = main_drawer_navigation.getMenu();
             MenuItem logInOut = drawer_menu.findItem(R.id.loginout);
             logInOut.setTitle(getString(R.string.logout));
@@ -163,7 +186,7 @@ public class MainActivity extends AppCompatActivity{
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(FragmentMain.newInstance(), getString(R.string.tab_1_title));
-        adapter.addFrag(new FragmentMain(), getString(R.string.tab_2_title));
+        adapter.addFrag(FragmentTestimonials.newInstance(), getString(R.string.tab_2_title));
         adapter.addFrag(FragmentUnete.newInstance(), getString(R.string.tab_3_title));
         viewPager.setAdapter(adapter);
     }

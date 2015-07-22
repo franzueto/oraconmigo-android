@@ -28,4 +28,10 @@ public class ParseConstants {
     public final static String TABLE_CHECKIN_FIELD_LAT = "lat";
     public final static String TABLE_CHECKIN_FIELD_LONG = "long";
 
+    /* PARSE TABLE - TESTIMONIAL*/
+    public final static String TABLE_TESTIMONIAL = "Testimonial";
+    public final static String TABLE_TESTIMONIAL_FIELD_USER = "user";
+    public final static String TABLE_TESTIMONIAL_FIELD_TEXT = "text";
+    public final static String TABLE_TESTIMONIAL_FIELD_APPROVED = "approved";
+
 }
