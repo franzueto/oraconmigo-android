@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,8 +32,8 @@
     <android.support.design.widget.FloatingActionButton
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:id="@+id/main_check_in_pray"
-        android:src="@drawable/ic_checkin"
+        android:id="@+id/btn_add_testimonial"
+        android:src="@drawable/ic_plus"
         android:layout_gravity="bottom|right"
         app:fabSize="normal"
         android:layout_marginRight="16dp"
