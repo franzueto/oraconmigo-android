@@ -10,6 +10,22 @@
     <string name="fb_login">Login con Facebook</string>
     <string name="logout">Logout</string>
 
+    <string name="daily_pray">Oración diaria 6AM y 6PM</string>
+    <string name="ayuno_day">Día de ayuno</string>
+    <string name="vigilia_day">Vigilia</string>
+    <string name="public_pray">Oración Pública</string>
+
+    <string name="image_description">Image</string>
+    <string name="icon_description">Icon</string>
+    <string name="background_description">Background</string>
+
+    <string name="dlg_saving">Guardando..</string>
+
+    <string name="error_not_location">No pudimos obtener tu ubicación, por favor intenta de nuevo.</string>
+    <string name="error_not_logged_in">Para apoyar y que podamos guardar tu ubicación por favor has Login con Facebook.</string>
+    <string name="error_unknown">Ocurrió un error, por favor intenta de nuevo.</string>
+    <string name="try_again">Intentar de nuevo.</string>
+
     <string name="tab_1_title">HOY</string>
     <string name="tab_2_title">TESTIMONIOS</string>
     <string name="tab_3_title">ÚNETE</string>

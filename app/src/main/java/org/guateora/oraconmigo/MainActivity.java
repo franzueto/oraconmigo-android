@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity{
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void fbLogin(){
+    public void fbLogin(){
         ParseFacebookUtils.logInWithReadPermissionsInBackground(this, null, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {

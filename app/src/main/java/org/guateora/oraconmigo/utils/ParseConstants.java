@@ -14,4 +14,10 @@ public class ParseConstants {
     public final static String TABLE_PRAY_FIELD_DATE = "date";
     public final static String TABLE_PRAY_FIELD_IMAGE = "image";
 
+    /* PARSE TABLE - CHECKIN*/
+    public final static String TABLE_CHECKIN = "Checkin";
+    public final static String TABLE_CHECKIN_FIELD_USER = "user";
+    public final static String TABLE_CHECKIN_FIELD_LAT = "lat";
+    public final static String TABLE_CHECKIN_FIELD_LONG = "long";
+
 }

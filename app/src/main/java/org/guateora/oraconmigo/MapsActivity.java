@@ -83,7 +83,10 @@ public class MapsActivity extends AppCompatActivity {
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CENTER_MAP, ZOOM_VALUE));
+
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        /*mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CENTER_MAP, ZOOM_VALUE));
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(14.60000, -90.51812))
@@ -93,6 +96,6 @@ public class MapsActivity extends AppCompatActivity {
                 .position(new LatLng(14.62459, -90.51487))
                 .title("META")
                 .snippet("Este es un texto de prueba.")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));*/
     }
 }
