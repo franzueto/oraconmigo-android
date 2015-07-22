@@ -1,10 +1,13 @@
 package org.guateora.oraconmigo;
 
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,14 +17,27 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import org.guateora.oraconmigo.utils.ParseConstants;
+
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity {
+
+    private static final String TAG = "MapsActivity";
 
     private final static int ZOOM_VALUE = 12;
 
     private final static LatLng CENTER_MAP = new LatLng(14.59495, -90.51812);
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
+    private View mapsContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +50,8 @@ public class MapsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        mapsContainer = findViewById(R.id.maps_container);
 
         setUpMapIfNeeded();
     }
@@ -86,7 +104,11 @@ public class MapsActivity extends AppCompatActivity {
 
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        /*mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CENTER_MAP, ZOOM_VALUE));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CENTER_MAP, ZOOM_VALUE));
+
+        getCheckins();
+        /*
 
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(14.60000, -90.51812))
@@ -97,5 +119,39 @@ public class MapsActivity extends AppCompatActivity {
                 .title("META")
                 .snippet("Este es un texto de prueba.")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));*/
+    }
+
+    private void getCheckins(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseConstants.TABLE_CHECKIN);
+        query.include(ParseConstants.TABLE_CHECKIN_FIELD_USER);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> listCheckins, ParseException e) {
+                if(e == null){
+                    for(ParseObject checkin : listCheckins){
+                        ParseUser user = checkin.getParseUser(ParseConstants.TABLE_CHECKIN_FIELD_USER);
+
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(
+                                        checkin.getDouble(ParseConstants.TABLE_CHECKIN_FIELD_LAT)
+                                        , checkin.getDouble(ParseConstants.TABLE_CHECKIN_FIELD_LONG))
+                                )
+                                .title(user.getString(ParseConstants.TABLE_USER_FIELD_NAME))
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                    }
+                } else{
+                    Snackbar
+                            .make(mapsContainer, R.string.error_unknown, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.try_again, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    getCheckins();
+                                }
+                            })
+                            .show();
+                    Log.e(TAG, "Error: " + e.getMessage());
+                }
+            }
+        });
     }
 }

@@ -1,16 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.guateora.oraconmigo.MapsActivity"
-    android:orientation="vertical">
+    tools:context=".MapsActivity">
 
-    <include
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/maps_container">
 
-    <fragment android:layout_width="match_parent"
-        android:layout_height="match_parent" android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        <include
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-</LinearLayout>
+        <fragment android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

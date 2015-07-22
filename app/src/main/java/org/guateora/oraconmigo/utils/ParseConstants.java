@@ -5,6 +5,9 @@ package org.guateora.oraconmigo.utils;
  */
 public class ParseConstants {
 
+    /* PARSE TABLE - USER*/
+    public final static String TABLE_USER_FIELD_NAME = "name";
+
     /* PARSE TABLE - PRAY*/
     public final static String TABLE_PRAY = "Pray";
     public final static String TABLE_PRAY_FIELD_DAY = "day";
