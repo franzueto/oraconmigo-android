@@ -8,6 +8,11 @@ import java.util.GregorianCalendar;
  */
 public class Utils {
 
+    public static final String FACEBOOK_LARGE_PICTURE = "https://graph.facebook.com/%s/picture?type=large";
+    public static final String FACEBOOK_MEDIUM_PICTURE = "https://graph.facebook.com/%s/picture?type=normal";
+    public static final String FACEBOOK_SMALL_PICTURE = "https://graph.facebook.com/%s/picture?type=small";
+    public static final String FACEBOOK_SQUARE_PICTURE = "https://graph.facebook.com/%s/picture?type=square";
+
     public static Calendar getTodayInit(){
         // today
         Calendar today_init = new GregorianCalendar();

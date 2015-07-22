@@ -2,13 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/guia_completa"
+            android:id="@+id/oracion_del_dia"
             android:checked="true"
-            android:icon="@drawable/ic_idea"
+            android:icon="@drawable/ic_pray_day_menu"
+            android:title="@string/oracion_del_dia"/>
+        <item
+            android:id="@+id/guia_completa"
+            android:icon="@drawable/ic_full_guide_menu"
             android:title="@string/guia_completa"/>
         <item
             android:id="@+id/mapa_oradores"
-            android:icon="@drawable/ic_user_flat"
+            android:icon="@drawable/ic_map_menu"
             android:title="@string/mapa_oradores"/>
         <item
             android:id="@+id/faqs"
@@ -17,7 +21,7 @@
 
         <item
             android:id="@+id/loginout"
-            android:icon="@drawable/ic_question"
+            android:icon="@drawable/ic_fb_menu"
             android:title="@string/fb_login"/>
     </group>
 </menu>
