@@ -1,10 +1,12 @@
 package org.guateora.oraconmigo;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,15 +23,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.guateora.oraconmigo.fragments.FragmentMain;
 import org.guateora.oraconmigo.fragments.FragmentUnete;
+import org.guateora.oraconmigo.utils.ParseConstants;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -37,10 +51,15 @@ public class MainActivity extends AppCompatActivity{
 
     public Location mCurrentLocation;
 
+    private ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         // Add Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
@@ -128,7 +147,7 @@ public class MainActivity extends AppCompatActivity{
                             finish();
                             startActivity(getIntent());
                         } else {
-                            fbLogin();
+                            fbLogin(menuItem.getActionView());
                         }
                         break;
                     default:
@@ -149,6 +168,12 @@ public class MainActivity extends AppCompatActivity{
         viewPager.setAdapter(adapter);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -174,24 +199,27 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
-    }
+    public void fbLogin(final View parent){
+        dialog = ProgressDialog.show(this, "", getResources().getString(R.string.dlg_loading), true, false);
 
-    public void fbLogin(){
-        ParseFacebookUtils.logInWithReadPermissionsInBackground(this, null, new LogInCallback() {
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(this, Arrays.asList("email"), new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
                 if (user == null) {
-                    Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                    dialog.dismiss();
+                    Snackbar
+                            .make(parent, R.string.error_couldnt_login, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.try_again, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    fbLogin(parent);
+                                }
+                            })
+                            .show();
                 } else if (user.isNew()) {
-                    Log.d("MyApp", "User signed up and logged in through Facebook!");
-                    finish();
-                    startActivity(getIntent());
+                    getFacebookIdInBackground();
                 } else {
-                    Log.d("MyApp", "User logged in through Facebook!");
+                    dialog.dismiss();
                     finish();
                     startActivity(getIntent());
                 }
@@ -199,11 +227,64 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
+    private void getFacebookIdInBackground() {
+        GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject user, GraphResponse response) {
+                if (user != null) {
+                    try {
+                        //Log.w("info user", user.toString());
+
+                        final String first_name = user.get("first_name").toString();
+                        final String last_name = user.get("last_name").toString();
+                        final String fbId = user.get("id").toString();
+                        final String email = user.get("email").toString();
+                        final String gender = user.get("gender").toString();
+
+                        ParseUser.getCurrentUser().put(ParseConstants.TABLE_USER_FIELD_FBID, fbId);
+                        ParseUser.getCurrentUser().put(ParseConstants.TABLE_USER_FIELD_NAME, first_name + " " + last_name);
+                        ParseUser.getCurrentUser().put(ParseConstants.TABLE_USER_FIELD_FIRSTNAME, first_name);
+                        ParseUser.getCurrentUser().put(ParseConstants.TABLE_USER_FIELD_LASTNAME, last_name);
+                        ParseUser.getCurrentUser().put(ParseConstants.TABLE_USER_FIELD_EMAIL, email);
+                        ParseUser.getCurrentUser().put(ParseConstants.TABLE_USER_FIELD_GENDER, gender);
+
+                        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                dialog.dismiss();
+                                if (e == null) {
+                                    finish();
+                                    startActivity(getIntent());
+                                } else {
+                                    e.printStackTrace();
+                                    Toast.makeText(MainActivity.this, getString(R.string.error_unknown) + " - " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    } catch (JSONException e) {
+                        dialog.dismiss();
+                        e.printStackTrace();
+                        Toast.makeText(MainActivity.this, getString(R.string.error_unknown), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }).executeAsync();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(dialog!=null && dialog.isShowing()){
+            dialog.dismiss();
+        }
+    }
+
+
     private class MyLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.w("TAG", "LAT: "+ location.getLatitude());
             mCurrentLocation = location;
         }
 

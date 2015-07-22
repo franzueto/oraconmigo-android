@@ -31,13 +31,19 @@ public class MapsActivity extends AppCompatActivity {
 
     private static final String TAG = "MapsActivity";
 
+    public static final String CENTER_MAP_LATITUDE = "CENTER_MAP_LATITUDE";
+    public static final String CENTER_MAP_LONGITUDE= "CENTER_MAP_LONGITUDE";
+
     private final static int ZOOM_VALUE = 12;
 
-    private final static LatLng CENTER_MAP = new LatLng(14.59495, -90.51812);
+    private final static LatLng DEFAULT_CENTER_MAP = new LatLng(14.59495, -90.51812); //GUATEMALA
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     private View mapsContainer;
+
+    private Double extraLat;
+    private Double extraLon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,12 @@ public class MapsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mapsContainer = findViewById(R.id.maps_container);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            extraLat = extras.getDouble(CENTER_MAP_LATITUDE);
+            extraLon = extras.getDouble(CENTER_MAP_LONGITUDE);
+        }
 
         setUpMapIfNeeded();
     }
@@ -105,7 +117,11 @@ public class MapsActivity extends AppCompatActivity {
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(CENTER_MAP, ZOOM_VALUE));
+        if(extraLat != null && extraLon !=null){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(extraLat, extraLon), ZOOM_VALUE));
+        } else{
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(DEFAULT_CENTER_MAP, ZOOM_VALUE));
+        }
 
         getCheckins();
         /*

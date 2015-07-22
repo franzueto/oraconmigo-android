@@ -7,6 +7,11 @@ public class ParseConstants {
 
     /* PARSE TABLE - USER*/
     public final static String TABLE_USER_FIELD_NAME = "name";
+    public final static String TABLE_USER_FIELD_FIRSTNAME = "first_name";
+    public final static String TABLE_USER_FIELD_LASTNAME = "last_name";
+    public final static String TABLE_USER_FIELD_EMAIL = "email";
+    public final static String TABLE_USER_FIELD_FBID = "fbId";
+    public final static String TABLE_USER_FIELD_GENDER = "gender";
 
     /* PARSE TABLE - PRAY*/
     public final static String TABLE_PRAY = "Pray";

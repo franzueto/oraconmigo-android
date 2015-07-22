@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Ora Conmigo</string>
-    <string name="facebook_app_id">1455742978060644</string>
+    <string name="facebook_app_id">325474847649967</string>
     
     <string name="faqs">Preguntas Frecuntes</string>
     <string name="mapa_oradores">Mapa Oradores</string>
@@ -20,8 +20,10 @@
     <string name="background_description">Background</string>
 
     <string name="dlg_saving">Guardando..</string>
+    <string name="dlg_loading">Cargando..</string>
 
     <string name="error_not_location">No pudimos obtener tu ubicación, por favor intenta de nuevo.</string>
+    <string name="error_couldnt_login">No pudimos realizar el Login, por favor intenta de nuevo.</string>
     <string name="error_not_logged_in">Para apoyar y que podamos guardar tu ubicación por favor has Login con Facebook.</string>
     <string name="error_unknown">Ocurrió un error, por favor intenta de nuevo.</string>
     <string name="try_again">Intentar de nuevo.</string>

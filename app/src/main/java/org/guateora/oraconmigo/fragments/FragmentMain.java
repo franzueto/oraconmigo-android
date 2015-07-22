@@ -70,7 +70,7 @@ public class FragmentMain extends Fragment {
                                 .setAction(R.string.fb_login, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        ((MainActivity) getActivity()).fbLogin();
+                                        ((MainActivity) getActivity()).fbLogin(v);
                                     }
                                 })
                                 .show();
@@ -140,7 +140,7 @@ public class FragmentMain extends Fragment {
         }
     }
 
-    private void saveLocation(ParseUser currentUser, Location currentLocation, final View parent){
+    private void saveLocation(ParseUser currentUser, final Location currentLocation, final View parent){
         ParseObject checkin = new ParseObject(ParseConstants.TABLE_CHECKIN);
         checkin.put(ParseConstants.TABLE_CHECKIN_FIELD_USER, currentUser);
         checkin.put(ParseConstants.TABLE_CHECKIN_FIELD_LAT, currentLocation.getLatitude());
@@ -154,6 +154,8 @@ public class FragmentMain extends Fragment {
                 dialog.dismiss();
                 if(e == null){
                     Intent intent = new Intent(getActivity(), MapsActivity.class);
+                    intent.putExtra(MapsActivity.CENTER_MAP_LATITUDE, currentLocation.getLatitude());
+                    intent.putExtra(MapsActivity.CENTER_MAP_LONGITUDE, currentLocation.getLongitude());
                     startActivity(intent);
                 } else{
                     Snackbar
